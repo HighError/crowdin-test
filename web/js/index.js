@@ -6,40 +6,39 @@ update();
 
 async function update() {
   crowdinFiles && crowdinFiles.setAttribute('is-loading', true);
-  fetch('http://127.0.0.1:3000/status')
+  await axios.get('http://127.0.0.1:3000/status').catch((err) => {
+    if (err.response.status === 401) {
+      return (window.location.href = '/login.html');
+    }
+  });
+
+  await axios
+    .get('http://127.0.0.1:3000/data')
     .then((res) => {
-      if (res.status === 401) {
-        window.location.href = '/login.html';
-      }
+      crowdinFiles && crowdinFiles.setFilesData(res.data);
+      crowdinFiles && crowdinFiles.removeAttribute('is-loading');
     })
-    .catch(() => {});
-  fetch('http://127.0.0.1:3000/data')
+    .catch((err) => alert(`Error loaded data: ${err.message}`));
+
+  await axios
+    .get('http://127.0.0.1:3000/folders')
     .then((res) => {
-      res.json().then((data) => {
-        crowdinFiles && crowdinFiles.setFilesData(data);
-        crowdinFiles && crowdinFiles.removeAttribute('is-loading');
+      let html = '';
+      res.data.map((e) => {
+        html += `<option value="${e.id}">${e.name}</option>`;
       });
+      select.innerHTML = html;
     })
-    .catch(() => {});
-  fetch('http://127.0.0.1:3000/folders')
-    .then((res) => {
-      res.json().then((data) => {
-        let html = '';
-        data.map((e) => {
-          html += `<option value="${e.id}">${e.name}</option>`;
-        });
-        select.innerHTML = html;
-      });
-    })
-    .catch(() => {});
+    .catch((err) => {
+      alert(`Error loaded folders: ${err.message}`);
+    });
 }
 
 async function logout() {
-  fetch('http://127.0.0.1:3000/logout', { method: 'DELETE' })
-    .then((res) => {
-      update();
-    })
-    .catch(() => {});
+  await axios
+    .delete('http://127.0.0.1:3000/logout')
+    .then(() => update())
+    .catch((err) => alert(err.message));
 }
 
 async function download() {
@@ -62,27 +61,22 @@ async function upload(e) {
   reader.onload = () => {
     console.log(reader);
     const data = reader.result;
-    fetch('http://127.0.0.1:3000/upload', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json; charset=utf-8',
-      },
-      body: JSON.stringify({
+    axios
+      .post('http://127.0.0.1:3000/upload', {
         folderID,
         file: data,
         fileName: e.detail[0].name,
-      }),
-    })
-      .then((res) => {
+      })
+      .then(() => {
+        alert('Complete upload');
         update();
-        alert('ok!');
       })
       .catch((err) => {
-        console.log(err);
+        alert(`Error upload: ${err.message}`);
       });
   };
   reader.onerror = function (e) {
-    return alert('Error : ' + e.type);
+    return alert('Error: ' + e.type);
   };
 
   reader.readAsText(e.detail[0]);

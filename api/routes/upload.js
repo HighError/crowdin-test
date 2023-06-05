@@ -12,13 +12,9 @@ router.post('/', async (req, res) => {
       return res.status(400).send('Missing params!');
     }
     const user = await getUserStatus();
-    const fileData = { title: fileName };
-    const {
-      projectsGroupsApi,
-      uploadStorageApi,
-      sourceFilesApi,
-      translationsApi,
-    } = new crowdin.default({ token: user.token });
+    const { uploadStorageApi, sourceFilesApi } = new crowdin.default({
+      token: user.token,
+    });
 
     const storage = await uploadStorageApi.addStorage(fileName, file);
     const fileOptions = {
@@ -28,10 +24,7 @@ router.post('/', async (req, res) => {
     if (folderID != 0) {
       fileOptions.directoryId = +folderID;
     }
-    const createdFile = await sourceFilesApi.createFile(
-      user.projectID,
-      fileOptions,
-    );
+    await sourceFilesApi.createFile(user.projectID, fileOptions);
 
     return res.end();
   } catch (err) {

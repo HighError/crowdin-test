@@ -8,28 +8,26 @@ async function login() {
     return alert('Missing params!');
   }
 
-  fetch('http://127.0.0.1:3000/login', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json; charset=utf-8',
-    },
-    body: JSON.stringify({ projectID, token }),
-  })
-    .then(function (res) {
-      if (!res.ok) {
-        return alert('Login Error');
-      }
-      update();
+  await axios
+    .post('http://127.0.0.1:3000/login', {
+      projectID,
+      token,
     })
-    .catch((err) => alert(err.message));
+    .then(() => update())
+    .catch((err) => {
+      if (err.response.status === 401) {
+        return alert('Invalid Token');
+      }
+      if (err.response.status === 404) {
+        return alert('Invalid ProjectID');
+      }
+      return alert(err.message);
+    });
 }
 
 async function update() {
-  fetch('http://127.0.0.1:3000/status')
-    .then(function (res) {
-      if (res.status === 200) {
-        window.location.href = '/';
-      }
-    })
-    .catch(function () {});
+  await axios
+    .get('http://127.0.0.1:3000/status')
+    .then(() => (window.location.href = '/'))
+    .catch(() => {});
 }
