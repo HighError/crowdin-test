@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>App</title>
+    <script src="https://crowdin-web-components.s3.amazonaws.com/crowdin-web-components.js"></script>
+    <link rel="stylesheet" href="./css/index.css" />
+  </head>
+  <body>
+    <crowdin-button onclick="download()" primary
+      >Завантажити виділене</crowdin-button
+    >
+    <crowdin-button onclick="logout()">Вийти</crowdin-button>
+    <div class="download-block">
+      <crowdin-select
+        name="folders"
+        id="folders-select"
+        label="Select folder"
+      ></crowdin-select>
+      <crowdin-dnd-upload></crowdin-dnd-upload>
+    </div>
+
+    <crowdin-files-component
+      class="files"
+      root-name="Project"
+    ></crowdin-files-component>
+    <script src="./js/index.js"></script>
+  </body>
+</html>

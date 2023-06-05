@@ -1,0 +1,23 @@
+{
+  "name": "crowdin-api",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js"
+  },
+  "dependencies": {
+    "@crowdin/crowdin-api-client": "^1.23.1",
+    "cors": "^2.8.5",
+    "crypto-js": "^4.1.1",
+    "dotenv": "^16.1.3",
+    "express": "^4.18.2",
+    "express-easy-zip": "^1.1.5",
+    "fs-extra": "^11.1.1",
+    "sqlite3": "^5.1.6"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.22"
+  }
+}

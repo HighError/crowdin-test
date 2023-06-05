@@ -1,0 +1,18 @@
+body {
+  background-color: #eeeeee;
+}
+
+.container {
+  max-width: 540px;
+  margin: 0 auto;
+  width: full;
+}
+
+.form {
+  border: solid #aaaaaa 2px;
+  padding: 1em;
+}
+
+.input {
+  margin: 5px, auto;
+}

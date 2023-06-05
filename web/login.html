@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login</title>
+    <script src="https://crowdin-web-components.s3.amazonaws.com/crowdin-web-components.js"></script>
+    <script src="./js/login.js"></script>
+    <link rel="stylesheet" href="./css/login.css" />
+  </head>
+  <body>
+    <div class="container">
+      <crowdin-h1>Login Page</crowdin-h1>
+      <form class="form" id="loginForm" onsubmit="login()">
+        <crowdin-input
+          class="input"
+          with-fixed-height
+          label="Project ID"
+          value=""
+          name="projectID"
+          id="projectID"
+        ></crowdin-input>
+        <crowdin-input
+          class="input"
+          with-fixed-height
+          label="Token"
+          type="password"
+          value=""
+          name="token"
+          id="token"
+        ></crowdin-input>
+        <crowdin-button type="button" onclick="login()" primary
+          >Log In</crowdin-button
+        >
+      </form>
+    </div>
+  </body>
+</html>
